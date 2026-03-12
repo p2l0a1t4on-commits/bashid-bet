@@ -1,0 +1,960 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Casino · Слоты, Stonks, Самолётик</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Стили без изменений (такие же, как в предыдущем ответе) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 20% 20%, #1a0f0c, #0a0402);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+        }
+        .casino-card {
+            background: #1e1a17;
+            background-image: linear-gradient(145deg, #2a211c 0%, #18120e 100%);
+            border: 2px solid #ca9e6e;
+            border-radius: 36px 36px 24px 24px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.8), 0 0 0 2px #6b4f36 inset, 0 0 0 4px #2f231b inset;
+            padding: 24px 16px;
+            max-width: 550px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-align: center;
+            color: #f5d7b3;
+            text-shadow: 0 4px 0 #8b5a2b, 0 8px 12px black;
+            letter-spacing: 2px;
+            margin-top: -5px;
+            margin-bottom: 10px;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: #2f241d;
+            border: 2px solid #aa7f53;
+            color: #e9cbaa;
+            font-size: 1.1rem;
+            font-weight: 900;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.1s;
+            box-shadow: 0 5px 0 #3b2b1b;
+            flex: 1 0 auto;
+            max-width: 150px;
+        }
+        .tab-btn.active {
+            background: #c9a067;
+            color: #231a12;
+            border-color: #fad89d;
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #7b5b38;
+        }
+        .balance-panel {
+            background: #2b221c;
+            border-radius: 60px;
+            border: 2px solid #b48b5a;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #f5e1c4;
+            font-weight: 700;
+            font-size: 1.3rem;
+            box-shadow: inset 0 3px 8px #0a0502, 0 6px 0 #3f2e1f;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .balance-label {
+            text-transform: uppercase;
+            background: #3d3026;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: #e4c294;
+        }
+        .balance-value {
+            background: #0c0805;
+            padding: 6px 20px;
+            border-radius: 60px;
+            border: 2px solid #be9b6b;
+            color: #fadf9e;
+            font-size: 1.8rem;
+            font-weight: 900;
+        }
+        .game-container {
+            transition: 0.2s;
+        }
+        /* Слоты */
+        .slot-machine {
+            background: #1a130e;
+            border-radius: 60px;
+            padding: 30px 10px;
+            border: 4px solid #6f5237;
+            box-shadow: inset 0 0 15px #000000, 0 10px 0 #3b2c1d;
+            margin-bottom: 20px;
+        }
+        .reels {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .reel {
+            background: #f0eadc;
+            background: linear-gradient(145deg, #fff6e0, #e0cfb9);
+            width: 90px;
+            height: 110px;
+            border-radius: 24px;
+            box-shadow: 0 0 0 5px #4a3727, 0 10px 0 #2f1f14, inset 0 -6px 8px #bba88b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            transform: rotate(0.5deg);
+            color: #2f281c;
+            text-shadow: 2px 2px 0 #ab906b;
+        }
+        .reel.spin-animation {
+            animation: spinBlur 0.3s infinite;
+        }
+        @keyframes spinBlur {
+            0% { transform: scale(1) rotate(1deg); filter: blur(0.5px); }
+            50% { transform: scale(1.05) rotate(-2deg); filter: blur(2px); background: #fffce6; }
+            100% { transform: scale(1) rotate(1deg); filter: blur(0.5px); }
+        }
+        /* Stonks */
+        .stonks-header {
+            background: #1f1610;
+            border-radius: 60px;
+            padding: 20px 10px;
+            border: 3px solid #b68b57;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: inset 0 0 10px #000000, 0 8px 0 #3e2d1c;
+        }
+        .stonks-label {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #ffdba5;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+        .current-price {
+            font-size: 3rem;
+            font-weight: 900;
+            background: #0b0704;
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 60px;
+            border: 3px solid #dbb079;
+            color: #fbe1a6;
+        }
+        .stonks-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .stonks-btn {
+            font-size: 1.8rem;
+            font-weight: 900;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.07s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 8px 0 #2f1f12;
+            border-bottom: 4px solid #896a40;
+        }
+        .stonks-btn.up {
+            background: #1f9e6d;
+            color: #e6ffe6;
+        }
+        .stonks-btn.down {
+            background: #b64545;
+            color: #ffe1e1;
+        }
+        .stonks-btn:active:enabled {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 #2f1f12;
+        }
+        .stonks-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        /* Самолётик */
+        .plane-header {
+            background: #1f1610;
+            border-radius: 60px;
+            padding: 25px 10px;
+            border: 3px solid #b68b57;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: inset 0 0 10px #000000, 0 8px 0 #3e2d1c;
+        }
+        .multiplier {
+            font-size: 4rem;
+            font-weight: 900;
+            background: #0b0704;
+            display: inline-block;
+            padding: 10px 35px;
+            border-radius: 60px;
+            border: 3px solid #dbb079;
+            color: #fbe1a6;
+            letter-spacing: 2px;
+        }
+        .plane-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .plane-btn {
+            font-size: 2rem;
+            font-weight: 900;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.07s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 8px 0 #2f1f12;
+            border-bottom: 4px solid #896a40;
+            background: #c59a5e;
+            color: #1e150e;
+        }
+        .plane-btn:active:enabled {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 #2f1f12;
+        }
+        .plane-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .plane-btn.cashout {
+            background: #27ae60;
+            color: white;
+        }
+        /* Общие компоненты */
+        .bet-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 350px;
+            margin: 0 auto 20px;
+        }
+        .bet-label {
+            color: #f2d7b0;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .bet-input-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            width: 100%;
+        }
+        .bet-input-wrapper input {
+            background: #0d0906;
+            border: 2px solid #cb9e6b;
+            color: #ffd78c;
+            font-size: 1.8rem;
+            font-weight: 900;
+            width: 130px;
+            text-align: center;
+            padding: 8px 5px;
+            border-radius: 40px;
+            outline: none;
+        }
+        .bet-input-wrapper input:focus {
+            border-color: #e5b87b;
+            box-shadow: 0 0 12px #e5b87b;
+        }
+        .stepper-btn {
+            background: #4a3729;
+            border: 2px solid #b48b5a;
+            color: #fadf9e;
+            font-size: 2rem;
+            font-weight: 900;
+            width: 50px;
+            height: 50px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 4px 0 #2f1f14;
+            user-select: none;
+        }
+        .stepper-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+        .quick-bets {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .quick-btn {
+            background: #3d3026;
+            border: 2px solid #b68f61;
+            color: #f2d7b0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 4px 0 #2f1f14;
+            text-transform: uppercase;
+        }
+        .quick-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+        .message-area {
+            background: #261e17;
+            border-radius: 50px;
+            padding: 14px 16px;
+            border: 2px solid #c2a071;
+            color: #fbeed6;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: center;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 8px #000000;
+            margin-bottom: 20px;
+        }
+        .last-results {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            color: #c2a97c;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border-top: 2px dashed #7f623e;
+            padding-top: 16px;
+        }
+        .last-icons span {
+            font-size: 1.8rem;
+            margin: 0 4px;
+            filter: drop-shadow(0 2px 2px black);
+        }
+        .footer-note {
+            margin-top: 12px;
+            font-size: 0.7rem;
+            color: #5f503e;
+            text-align: center;
+        }
+        @media (max-width: 450px) {
+            h1 { font-size: 1.8rem; }
+            .balance-value { font-size: 1.5rem; }
+            .reel { width: 70px; height: 90px; font-size: 3.2rem; }
+            .tab-btn { font-size: 0.9rem; padding: 8px 12px; }
+            .current-price { font-size: 2.2rem; }
+            .multiplier { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="casino-card">
+        <h1>⸸ TRIPLE CASINO ⸸</h1>
+
+        <!-- Табы -->
+        <div class="tabs">
+            <button class="tab-btn active" id="tabSlots">🎰 Слоты</button>
+            <button class="tab-btn" id="tabStonks">📈 Stonks</button>
+            <button class="tab-btn" id="tabPlane">✈️ Самолётик</button>
+        </div>
+
+        <!-- Баланс -->
+        <div class="balance-panel">
+            <span class="balance-label">💰 Баланс</span>
+            <span class="balance-value" id="balanceDisplay">1000</span>
+        </div>
+
+        <!-- ========== ИГРОВЫЕ КОНТЕЙНЕРЫ ========== -->
+
+        <!-- Слоты -->
+        <div id="slotsGame" class="game-container">
+            <div class="slot-machine">
+                <div class="reels">
+                    <div class="reel" id="reel1">🍒</div>
+                    <div class="reel" id="reel2">🍒</div>
+                    <div class="reel" id="reel3">🍒</div>
+                </div>
+            </div>
+
+            <div class="bet-area" id="slotsBetArea">
+                <span class="bet-label">Ставка</span>
+                <div class="bet-input-wrapper">
+                    <div class="stepper-btn" id="slotsBetDecrease">−</div>
+                    <input type="number" id="slotsBetInput" class="bet-input" min="1" value="10" step="1">
+                    <div class="stepper-btn" id="slotsBetIncrease">+</div>
+                </div>
+                <div class="quick-bets">
+                    <div class="quick-btn" id="slotsBetHalf">1/2</div>
+                    <div class="quick-btn" id="slotsBetMax">Макс</div>
+                </div>
+            </div>
+
+            <button class="plane-btn" id="spinButton" style="width:100%; max-width:350px; margin:0 auto; display:block;">КРУТИТЬ</button>
+
+            <div class="message-area" id="slotMessage">🎰 Нажми "КРУТИТЬ", чтобы начать</div>
+        </div>
+
+        <!-- Stonks -->
+        <div id="stonksGame" class="game-container" style="display:none;">
+            <div class="stonks-header">
+                <div class="stonks-label">📈 STONKS</div>
+                <span class="current-price" id="stonksPrice">100.00</span>
+            </div>
+
+            <div class="bet-area" id="stonksBetArea">
+                <span class="bet-label">Ставка</span>
+                <div class="bet-input-wrapper">
+                    <div class="stepper-btn" id="stonksBetDecrease">−</div>
+                    <input type="number" id="stonksBetInput" class="bet-input" min="1" value="10" step="1">
+                    <div class="stepper-btn" id="stonksBetIncrease">+</div>
+                </div>
+                <div class="quick-bets">
+                    <div class="quick-btn" id="stonksBetHalf">1/2</div>
+                    <div class="quick-btn" id="stonksBetMax">Макс</div>
+                </div>
+            </div>
+
+            <div class="stonks-controls">
+                <button class="stonks-btn up" id="stonksUp">▲ Вверх</button>
+                <button class="stonks-btn down" id="stonksDown">▼ Вниз</button>
+            </div>
+
+            <div class="message-area" id="stonksMessage">Выберите направление</div>
+        </div>
+
+        <!-- Самолётик -->
+        <div id="planeGame" class="game-container" style="display:none;">
+            <div class="plane-header">
+                <span class="multiplier" id="planeMultiplier">1.00x</span>
+            </div>
+
+            <div class="bet-area" id="planeBetArea">
+                <span class="bet-label">Ставка</span>
+                <div class="bet-input-wrapper">
+                    <div class="stepper-btn" id="planeBetDecrease">−</div>
+                    <input type="number" id="planeBetInput" class="bet-input" min="1" value="10" step="1">
+                    <div class="stepper-btn" id="planeBetIncrease">+</div>
+                </div>
+                <div class="quick-bets">
+                    <div class="quick-btn" id="planeBetHalf">1/2</div>
+                    <div class="quick-btn" id="planeBetMax">Макс</div>
+                </div>
+            </div>
+
+            <div class="plane-controls">
+                <button class="plane-btn" id="planeStartBtn">ВЗЛЕТЕТЬ</button>
+                <button class="plane-btn cashout" id="planeCashoutBtn" disabled>ЗАБРАТЬ</button>
+            </div>
+
+            <div class="message-area" id="planeMessage">Нажми "ВЗЛЕТЕТЬ"</div>
+
+            <div class="last-results">
+                <span>Краши:</span>
+                <span class="last-icons" id="planeHistory"></span>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            ✦ Демо · только виртуальные кредиты ✦
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- ФУНКЦИИ ДЛЯ РАБОТЫ С ХРАНИЛИЩЕМ ----------
+            const STORAGE_KEYS = {
+                BALANCE: 'casino_balance',
+                STONKS_PRICE: 'casino_stonksPrice',
+                SLOTS_HISTORY: 'casino_slotsHistory',
+                PLANE_HISTORY: 'casino_planeHistory'
+            };
+
+            function saveBalance() {
+                localStorage.setItem(STORAGE_KEYS.BALANCE, balance.toString());
+            }
+
+            function saveStonksPrice() {
+                localStorage.setItem(STORAGE_KEYS.STONKS_PRICE, stonksPrice.toString());
+            }
+
+            function saveSlotsHistory() {
+                localStorage.setItem(STORAGE_KEYS.SLOTS_HISTORY, JSON.stringify(lastResults));
+            }
+
+            function savePlaneHistory() {
+                localStorage.setItem(STORAGE_KEYS.PLANE_HISTORY, JSON.stringify(planeHistory));
+            }
+
+            function loadFromStorage() {
+                // Баланс
+                const savedBalance = localStorage.getItem(STORAGE_KEYS.BALANCE);
+                if (savedBalance !== null) {
+                    balance = parseInt(savedBalance) || 1000;
+                } else {
+                    balance = 1000;
+                }
+
+                // Цена Stonks
+                const savedPrice = localStorage.getItem(STORAGE_KEYS.STONKS_PRICE);
+                if (savedPrice !== null) {
+                    stonksPrice = parseFloat(savedPrice) || 100.0;
+                } else {
+                    stonksPrice = 100.0;
+                }
+
+                // История слотов
+                const savedSlotsHistory = localStorage.getItem(STORAGE_KEYS.SLOTS_HISTORY);
+                if (savedSlotsHistory !== null) {
+                    try {
+                        lastResults = JSON.parse(savedSlotsHistory) || [];
+                    } catch (e) {
+                        lastResults = [];
+                    }
+                } else {
+                    lastResults = [];
+                }
+
+                // История самолётика
+                const savedPlaneHistory = localStorage.getItem(STORAGE_KEYS.PLANE_HISTORY);
+                if (savedPlaneHistory !== null) {
+                    try {
+                        planeHistory = JSON.parse(savedPlaneHistory) || [];
+                    } catch (e) {
+                        planeHistory = [];
+                    }
+                } else {
+                    planeHistory = [];
+                }
+            }
+
+            // ---------- ОБЩИЙ БАЛАНС ----------
+            let balance = 1000;
+            const balanceEl = document.getElementById('balanceDisplay');
+            
+            function updateBalanceUI() {
+                balanceEl.textContent = balance;
+                // обновление максимумов для всех полей ставок (если они существуют)
+                const betInputs = ['slotsBetInput', 'stonksBetInput', 'planeBetInput']
+                    .map(id => document.getElementById(id))
+                    .filter(el => el !== null);
+                betInputs.forEach(inp => {
+                    inp.max = Math.max(1, balance);
+                    let val = parseInt(inp.value);
+                    if (isNaN(val) || val < 1) inp.value = 1;
+                    if (val > balance) inp.value = balance;
+                });
+
+                // кнопка спина слотов
+                const spinBtn = document.getElementById('spinButton');
+                const slotsBet = document.getElementById('slotsBetInput');
+                if (spinBtn && slotsBet) {
+                    spinBtn.disabled = (balance <= 0 || parseInt(slotsBet.value) < 1 || parseInt(slotsBet.value) > balance);
+                }
+                saveBalance();
+            }
+
+            // ---------- ПЕРЕКЛЮЧЕНИЕ ТАБОВ ----------
+            const tabSlots = document.getElementById('tabSlots');
+            const tabStonks = document.getElementById('tabStonks');
+            const tabPlane = document.getElementById('tabPlane');
+            const slotsGame = document.getElementById('slotsGame');
+            const stonksGame = document.getElementById('stonksGame');
+            const planeGame = document.getElementById('planeGame');
+
+            function resetPlaneState() {
+                if (planeInterval) {
+                    clearInterval(planeInterval);
+                    planeInterval = null;
+                }
+                planeActive = false;
+                planeCrashed = false;
+                const startBtn = document.getElementById('planeStartBtn');
+                const cashoutBtn = document.getElementById('planeCashoutBtn');
+                const betInput = document.getElementById('planeBetInput');
+                const multiplierEl = document.getElementById('planeMultiplier');
+                if (startBtn) startBtn.disabled = false;
+                if (cashoutBtn) cashoutBtn.disabled = true;
+                if (betInput) betInput.disabled = false;
+                if (multiplierEl) multiplierEl.textContent = '1.00x';
+
+                const decrease = document.getElementById('planeBetDecrease');
+                const increase = document.getElementById('planeBetIncrease');
+                const half = document.getElementById('planeBetHalf');
+                const max = document.getElementById('planeBetMax');
+                if (decrease) decrease.style.pointerEvents = 'auto';
+                if (increase) increase.style.pointerEvents = 'auto';
+                if (half) half.style.pointerEvents = 'auto';
+                if (max) max.style.pointerEvents = 'auto';
+            }
+
+            function setActiveTab(tab) {
+                tabSlots.classList.toggle('active', tab === 'slots');
+                tabStonks.classList.toggle('active', tab === 'stonks');
+                tabPlane.classList.toggle('active', tab === 'plane');
+                slotsGame.style.display = tab === 'slots' ? 'block' : 'none';
+                stonksGame.style.display = tab === 'stonks' ? 'block' : 'none';
+                planeGame.style.display = tab === 'plane' ? 'block' : 'none';
+
+                if (tab === 'plane') {
+                    resetPlaneState();
+                } else {
+                    if (planeInterval) {
+                        clearInterval(planeInterval);
+                        planeInterval = null;
+                    }
+                }
+            }
+
+            tabSlots.addEventListener('click', () => setActiveTab('slots'));
+            tabStonks.addEventListener('click', () => setActiveTab('stonks'));
+            tabPlane.addEventListener('click', () => setActiveTab('plane'));
+
+            // ---------- СЛОТЫ ----------
+            const reel1 = document.getElementById('reel1');
+            const reel2 = document.getElementById('reel2');
+            const reel3 = document.getElementById('reel3');
+            const spinBtn = document.getElementById('spinButton');
+            const slotMessage = document.getElementById('slotMessage');
+            const slotsBetInput = document.getElementById('slotsBetInput');
+            const slotsBetDecrease = document.getElementById('slotsBetDecrease');
+            const slotsBetIncrease = document.getElementById('slotsBetIncrease');
+            const slotsBetHalf = document.getElementById('slotsBetHalf');
+            const slotsBetMax = document.getElementById('slotsBetMax');
+
+            const SYMBOLS = ['🍒', '🍋', '🍉', '7'];
+            const MULTIPLIERS = {'🍒':2,'🍋':3,'🍉':5,'7':10};
+            let lastResults = [];
+            const lastIconsSpan = document.getElementById('lastIcons');
+
+            function randomSymbol() { return SYMBOLS[Math.floor(Math.random()*SYMBOLS.length)]; }
+            
+            function addLastResult(s1,s2,s3) {
+                lastResults.unshift(`${s1} ${s2} ${s3}`);
+                if (lastResults.length>3) lastResults.pop();
+                if (lastIconsSpan) {
+                    lastIconsSpan.innerHTML = lastResults.map(c=>`<span>${c}</span>`).join(' · ');
+                }
+                saveSlotsHistory();
+            }
+
+            function calculateWin(s1,s2,s3,bet) {
+                return (s1===s2 && s2===s3) ? bet * MULTIPLIERS[s1] : 0;
+            }
+
+            function animateSpin(cb) {
+                const reels = [reel1,reel2,reel3];
+                reels.forEach(r=>r.classList.add('spin-animation'));
+                const interval = setInterval(()=> reels.forEach(r=>r.textContent=randomSymbol()), 70);
+                setTimeout(()=> {
+                    clearInterval(interval);
+                    reels.forEach(r=>r.classList.remove('spin-animation'));
+                    cb();
+                }, 400);
+            }
+
+            function performSpin() {
+                let bet = parseInt(slotsBetInput.value);
+                if (isNaN(bet)||bet<1) { slotMessage.textContent='❌ Минимум 1'; return; }
+                if (bet>balance) { slotMessage.textContent='❌ Недостаточно средств'; updateBalanceUI(); return; }
+                balance -= bet;
+                updateBalanceUI();
+                slotMessage.textContent='🎲 Вращаем...';
+                animateSpin(()=> {
+                    const f1=randomSymbol(), f2=randomSymbol(), f3=randomSymbol();
+                    reel1.textContent=f1; reel2.textContent=f2; reel3.textContent=f3;
+                    const win = calculateWin(f1,f2,f3,bet);
+                    if (win>0) { balance+=win; slotMessage.textContent=`🎉 +${win} кредитов!`; }
+                    else slotMessage.textContent='😞 Повезёт в следующий раз...';
+                    addLastResult(f1,f2,f3);
+                    updateBalanceUI();
+                });
+            }
+            spinBtn.addEventListener('click', performSpin);
+
+            // ---------- STONKS ----------
+            const stonksPriceEl = document.getElementById('stonksPrice');
+            const stonksUpBtn = document.getElementById('stonksUp');
+            const stonksDownBtn = document.getElementById('stonksDown');
+            const stonksMessage = document.getElementById('stonksMessage');
+            const stonksBetInput = document.getElementById('stonksBetInput');
+            const stonksBetDecrease = document.getElementById('stonksBetDecrease');
+            const stonksBetIncrease = document.getElementById('stonksBetIncrease');
+            const stonksBetHalf = document.getElementById('stonksBetHalf');
+            const stonksBetMax = document.getElementById('stonksBetMax');
+
+            let stonksPrice = 100.0;
+            
+            function updateStonksPriceUI() { 
+                if (stonksPriceEl) stonksPriceEl.textContent = stonksPrice.toFixed(2);
+                saveStonksPrice();
+            }
+
+            function generateChange() {
+                let p;
+                do { p = (Math.random()*20-10)/100; } while (Math.abs(p)<0.001);
+                return p;
+            }
+
+            function playStonks(dir) {
+                let bet = parseInt(stonksBetInput.value);
+                if (isNaN(bet)||bet<1) { stonksMessage.textContent='❌ Минимум 1'; return; }
+                if (bet>balance) { stonksMessage.textContent='❌ Недостаточно средств'; updateBalanceUI(); return; }
+                balance -= bet;
+                updateBalanceUI();
+                const change = generateChange();
+                stonksPrice = stonksPrice * (1+change);
+                updateStonksPriceUI();
+                const actual = change>0 ? 'up' : 'down';
+                if (dir === actual) {
+                    const profit = Math.floor(bet * (1+Math.abs(change)));
+                    balance += profit;
+                    stonksMessage.textContent = `📈 +${(change*100).toFixed(1)}% · ВЫИГРЫШ: +${profit}`;
+                } else {
+                    stonksMessage.textContent = `📉 ${(change*100).toFixed(1)}% · Проигрыш`;
+                }
+                updateBalanceUI();
+            }
+            if (stonksUpBtn) stonksUpBtn.addEventListener('click', ()=>playStonks('up'));
+            if (stonksDownBtn) stonksDownBtn.addEventListener('click', ()=>playStonks('down'));
+
+            // ---------- САМОЛЁТИК ----------
+            const planeMultiplier = document.getElementById('planeMultiplier');
+            const planeStartBtn = document.getElementById('planeStartBtn');
+            const planeCashoutBtn = document.getElementById('planeCashoutBtn');
+            const planeMessage = document.getElementById('planeMessage');
+            const planeBetInput = document.getElementById('planeBetInput');
+            const planeBetDecrease = document.getElementById('planeBetDecrease');
+            const planeBetIncrease = document.getElementById('planeBetIncrease');
+            const planeBetHalf = document.getElementById('planeBetHalf');
+            const planeBetMax = document.getElementById('planeBetMax');
+            const planeHistorySpan = document.getElementById('planeHistory');
+
+            let planeInterval = null;
+            let planeActive = false;
+            let planeCrashed = false;
+            let currentMultiplier = 1.0;
+            let crashMultiplier = 1.0;
+            let planeBet = 0;
+            let planeHistory = [];
+
+            function generateCrashPoint() {
+                return 1.0 + Math.random() * 9; // от 1.0 до 10.0
+            }
+
+            function updatePlaneHistoryUI() {
+                if (planeHistorySpan) {
+                    planeHistorySpan.innerHTML = planeHistory.map(m => `<span>${m}</span>`).join(' · ');
+                }
+                savePlaneHistory();
+            }
+
+            function startPlane() {
+                if (planeActive) return;
+                let bet = parseInt(planeBetInput.value);
+                if (isNaN(bet)||bet<1) { planeMessage.textContent='❌ Минимум 1'; return; }
+                if (bet>balance) { planeMessage.textContent='❌ Недостаточно средств'; updateBalanceUI(); return; }
+
+                planeBet = bet;
+                balance -= planeBet;
+                updateBalanceUI();
+
+                planeActive = true;
+                planeCrashed = false;
+                currentMultiplier = 1.0;
+                crashMultiplier = generateCrashPoint();
+                planeMultiplier.textContent = currentMultiplier.toFixed(2)+'x';
+                planeMessage.textContent = '✈️ Самолёт взлетает...';
+                planeStartBtn.disabled = true;
+                planeCashoutBtn.disabled = false;
+                planeBetInput.disabled = true;
+
+                if (planeBetDecrease) planeBetDecrease.style.pointerEvents = 'none';
+                if (planeBetIncrease) planeBetIncrease.style.pointerEvents = 'none';
+                if (planeBetHalf) planeBetHalf.style.pointerEvents = 'none';
+                if (planeBetMax) planeBetMax.style.pointerEvents = 'none';
+
+                const step = 0.01;
+                planeInterval = setInterval(() => {
+                    if (!planeActive) return;
+                    currentMultiplier += step;
+                    planeMultiplier.textContent = currentMultiplier.toFixed(2)+'x';
+
+                    if (currentMultiplier >= crashMultiplier) {
+                        clearInterval(planeInterval);
+                        planeInterval = null;
+                        planeActive = false;
+                        planeCrashed = true;
+                        planeMultiplier.textContent = crashMultiplier.toFixed(2)+'x 💥';
+                        planeMessage.textContent = '💥 Самолёт разбился! Вы проиграли ставку.';
+                        planeCashoutBtn.disabled = true;
+                        planeStartBtn.disabled = false;
+                        planeBetInput.disabled = false;
+                        if (planeBetDecrease) planeBetDecrease.style.pointerEvents = 'auto';
+                        if (planeBetIncrease) planeBetIncrease.style.pointerEvents = 'auto';
+                        if (planeBetHalf) planeBetHalf.style.pointerEvents = 'auto';
+                        if (planeBetMax) planeBetMax.style.pointerEvents = 'auto';
+
+                        planeHistory.unshift(crashMultiplier.toFixed(2)+'x');
+                        if (planeHistory.length>6) planeHistory.pop();
+                        updatePlaneHistoryUI();
+                    }
+                }, 80);
+            }
+
+            function cashoutPlane() {
+                if (!planeActive || planeCrashed) return;
+                clearInterval(planeInterval);
+                planeInterval = null;
+                planeActive = false;
+                const winAmount = Math.floor(planeBet * currentMultiplier);
+                balance += winAmount;
+                planeMessage.textContent = `✅ Вы забрали ${winAmount} кредитов (x${currentMultiplier.toFixed(2)})`;
+                planeMultiplier.textContent = currentMultiplier.toFixed(2)+'x ✅';
+                planeCashoutBtn.disabled = true;
+                planeStartBtn.disabled = false;
+                planeBetInput.disabled = false;
+                if (planeBetDecrease) planeBetDecrease.style.pointerEvents = 'auto';
+                if (planeBetIncrease) planeBetIncrease.style.pointerEvents = 'auto';
+                if (planeBetHalf) planeBetHalf.style.pointerEvents = 'auto';
+                if (planeBetMax) planeBetMax.style.pointerEvents = 'auto';
+                updateBalanceUI();
+            }
+
+            if (planeStartBtn) planeStartBtn.addEventListener('click', startPlane);
+            if (planeCashoutBtn) planeCashoutBtn.addEventListener('click', cashoutPlane);
+
+            // ---------- ОБЩИЕ ФУНКЦИИ ДЛЯ СТАВОК ----------
+            function setupBetControls(inputId, decreaseId, increaseId, halfId, maxId) {
+                const input = document.getElementById(inputId);
+                const decrease = document.getElementById(decreaseId);
+                const increase = document.getElementById(increaseId);
+                const half = document.getElementById(halfId);
+                const max = document.getElementById(maxId);
+                if (!input || !decrease || !increase || !half || !max) return;
+
+                function change(delta) {
+                    let cur = parseInt(input.value) || 1;
+                    let newVal = cur + delta;
+                    if (newVal < 1) newVal = 1;
+                    if (newVal > balance) newVal = balance;
+                    input.value = newVal;
+                    updateBalanceUI();
+                }
+                decrease.addEventListener('click', ()=> change(-1));
+                increase.addEventListener('click', ()=> change(1));
+                half.addEventListener('click', ()=> {
+                    input.value = Math.max(1, Math.floor(balance/2));
+                    updateBalanceUI();
+                });
+                max.addEventListener('click', ()=> {
+                    input.value = balance;
+                    updateBalanceUI();
+                });
+                input.addEventListener('input', ()=> {
+                    let v = parseInt(input.value);
+                    if (isNaN(v)||v<1) input.value=1;
+                    if (v>balance) input.value=balance;
+                    updateBalanceUI();
+                });
+            }
+
+            // ---------- ИНИЦИАЛИЗАЦИЯ С ЗАГРУЗКОЙ ИЗ ХРАНИЛИЩА ----------
+            loadFromStorage();
+
+            // Применяем загруженные данные к интерфейсу
+            // Баланс уже в переменной, обновим UI
+            updateBalanceUI();
+
+            // Stonks цена
+            updateStonksPriceUI();
+
+            // История слотов
+            if (lastIconsSpan) {
+                lastIconsSpan.innerHTML = lastResults.map(c=>`<span>${c}</span>`).join(' · ');
+            }
+
+            // История самолётика
+            if (planeHistorySpan) {
+                planeHistorySpan.innerHTML = planeHistory.map(m=>`<span>${m}</span>`).join(' · ');
+            }
+
+            // Стартовые символы слотов (если нет истории, то случайные, иначе оставляем последние из истории)
+            if (lastResults.length > 0) {
+                const last = lastResults[0].split(' ');
+                if (last.length === 3) {
+                    reel1.textContent = last[0];
+                    reel2.textContent = last[1];
+                    reel3.textContent = last[2];
+                } else {
+                    reel1.textContent = randomSymbol();
+                    reel2.textContent = randomSymbol();
+                    reel3.textContent = randomSymbol();
+                }
+            } else {
+                reel1.textContent = randomSymbol();
+                reel2.textContent = randomSymbol();
+                reel3.textContent = randomSymbol();
+            }
+
+            setupBetControls('slotsBetInput', 'slotsBetDecrease', 'slotsBetIncrease', 'slotsBetHalf', 'slotsBetMax');
+            setupBetControls('stonksBetInput', 'stonksBetDecrease', 'stonksBetIncrease', 'stonksBetHalf', 'stonksBetMax');
+            setupBetControls('planeBetInput', 'planeBetDecrease', 'planeBetIncrease', 'planeBetHalf', 'planeBetMax');
+
+            setActiveTab('slots'); // стартовый таб
+        })();
+    </script>
+</body>
+</html>
